@@ -12,58 +12,113 @@ function formatChoice(text) {
 function playRound(playerSelection, computerSelection) {
     let player = formatChoice(playerSelection);
     let computer = formatChoice(computerSelection);
+    let winner = 0;
+
     if ( player == "Rock") {
         if ( computer == "Paper") {
-            return `You Lose! ${computer} beats ${player}`;
+            winner = 1;
         } else if ( computer == "Scissors" ) {
-            return `You Win! ${player} beats ${computer}`;
+            winner = 2;
         }
-        return `Draw`;
     } else if ( player == "Paper") {
         if ( computer == "Rock") {
-            return `You Win! ${player} beats ${computer}`;
+            winner = 1;
         } else if ( computer == "Scissors") {
-            return `You Lose! ${computer} beats ${player}`;
+            winner = 2;
         }
-        return `Draw`;
     } else if ( player == "Scissors" ) {
         if ( computer == "Rock" ) {
-            return `You Lose! ${computer} beats ${player}`;
+            winner = 2;
         } else if ( computer == "Paper" ) {
-            return `You Win! ${player} beats ${computer}`;
+            winner = 1;
         }
-        return `Draw`;
     }
+
+    return {
+        player,
+        computer,
+        winner,
+    }
+    
 }
 
-function game() {
-    let playerPoint = 0;
-    let computerPoint = 0;
-    let round = 5;
-    let roundPlayed = 0;
-    while ( roundPlayed < 5) {
-        let playerChoice = prompt("What move will you make? [Rock, Paper, Scissors]: ", "");
-        if ( playerChoice ) {
-            let result = playRound(playerChoice, computerPlay());
-            let splited = result.split(" ");
-            if ( splited.length > 0) {
-                if ( splited[1] == "Win!")
-                    playerPoint++;
-                else if ( splited[1] == "Lose!") 
-                    computerPoint++;
-                roundPlayed++;
-                alert(`Round ${roundPlayed}, Player: ${playerPoint}, Computer: ${computerPoint}`);
-            }
-        } 
-    }   
+function showWinner(result) {
 
-    if ( playerPoint > computerPoint ) {
-        alert("Player Win");
-    } else if ( playerPoint < computerPoint ) {
-        alert("Computer Win");
+    let resultText = document.querySelector(".result span");
+    let playerScore = document.querySelector(".scores__player__score");
+    let machineScore = document.querySelector(".scores__machine__score");
+
+    if ( result.winner == 0) {
+        resultText.textContent = "Draw!!! +0 xxxx2".toUpperCase();
+    } else if ( result.winner == 1 ) {
+        resultText.textContent = "Player Win!!! +1".toUpperCase();
+        playerScore.textContent = Number(playerScore.textContent) + 1;
     } else {
-        alert("Draw");
+        resultText.textContent = "Machine Win!!! +1".toUpperCase();
+        machineScore.textContent = Number(machineScore.textContent) + 1;
     }
 }
 
-game();
+function toggleChoices(enable) {
+    let choices = document.querySelectorAll("div.choices__selection");
+    for ( let i = 0; i < choices.length; i++ ) {
+        if (enable) {
+            choices[i].style.cursor = "pointer";
+        } else {
+            choices[i].style.cursor = "not-allowed";
+            choices[i].removeEventListener("click", playGame);
+        }
+    }
+}
+
+function playGame(event) {
+
+    let div;
+    if (event.target.nodeName == "I") {
+        div = event.target.parentElement;
+    } else {
+        div = event.target;
+    }
+
+    let player = formatChoice(div.getAttribute('data-selection'));
+    let computer = computerPlay();
+    let computerSelection = document.querySelector(`.choices__selection[data-selection="${computer.toLowerCase()}"]`);
+
+    div.classList.add("player");        
+    computerSelection.classList.add("computer");
+
+    let result = playRound(player, computer);
+
+    showWinner(result);
+
+    tryAgain.style.display = "inline";
+
+    toggleChoices(false);
+}
+
+function initGame() {
+    let choices = document.querySelectorAll("div.choices__selection");
+
+    for ( let i = 0; i < choices.length; i++ ) {
+        choices[i].addEventListener("click", playGame)
+    }
+}
+
+function resetGame(event) {
+    let choices = document.querySelectorAll("div.choices__selection");
+
+    for ( let i = 0; i < choices.length; i++ ) {
+        if (choices[i].classList.contains("player") || choices[i].classList.contains("computer")) {
+            choices[i].classList.remove("player", "computer");
+        }
+    }
+
+    initGame();
+    toggleChoices(true);
+}
+
+let tryAgain = document.querySelector(".result button");
+
+tryAgain.addEventListener("click", resetGame)
+
+initGame();

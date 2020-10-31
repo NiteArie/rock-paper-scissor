@@ -4,8 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock-Paper-Scissor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a8828a6553.js" crossorigin="anonymous"></script>
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
+
+    <h1>Rock - Paper - Scissors</h1>
+
+    <div class="scores">
+        <div class="scores__player">
+            <h2>Player</h2>
+            <span class="scores__player__score">0</span>
+        </div>
+        <div class="scores__machine">
+            <h2>Machine</h2>
+            <span class="scores__machine__score">0</span>
+        </div>
+    </div>
+
+    <div class="result">
+        <span>WAITING FOR CHOICE</span>
+        <button>PLAY AGAIN</button>
+    </div>
+
+    <div class="choices">
+        <div class="choices__selection" data-selection="rock">
+            <i class="far fa-hand-rock"></i>
+        </div>
+        <div class="choices__selection" data-selection="paper">
+            <i class="far fa-hand-paper"></i>
+        </div>
+        <div class="choices__selection" data-selection="scissors">
+            <i class="far fa-hand-scissors"></i>
+        </div>
+    </div>
+
+    <div class="notes">
+        <ul class="notes__list">
+            <li>Player: Green </li>
+            <li>Machine: Red</li>
+            <li>Player + Machine: Purple</li>
+        </ul>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
