@@ -36,4 +36,34 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-console.log(playRound("rock", computerPlay()));
+function game() {
+    let playerPoint = 0;
+    let computerPoint = 0;
+    let round = 5;
+    let roundPlayed = 0;
+    while ( roundPlayed < 5) {
+        let playerChoice = prompt("What move will you make? [Rock, Paper, Scissors]: ", "");
+        if ( playerChoice ) {
+            let result = playRound(playerChoice, computerPlay());
+            let splited = result.split(" ");
+            if ( splited.length > 0) {
+                if ( splited[1] == "Win!")
+                    playerPoint++;
+                else if ( splited[1] == "Lose!") 
+                    computerPoint++;
+                roundPlayed++;
+                alert(`Round ${roundPlayed}, Player: ${playerPoint}, Computer: ${computerPoint}`);
+            }
+        } 
+    }   
+
+    if ( playerPoint > computerPoint ) {
+        alert("Player Win");
+    } else if ( playerPoint < computerPoint ) {
+        alert("Computer Win");
+    } else {
+        alert("Draw");
+    }
+}
+
+game();
